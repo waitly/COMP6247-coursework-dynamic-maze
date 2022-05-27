@@ -7,14 +7,14 @@ import read_maze
 def update():
     time_list = []
     for episodes in range(50):
+        # Reset the environment and q_table instance
         state = env.reset()
         RL.reset(episodes)
         time = 0
         path_actions = []
         path_observations = []
         while True:
-            # Around observation
-            print(state)
+            # print(state)
             # Add the current position to trajectory
             env.update_trajectory(state)
             # Observe surroundings
@@ -27,7 +27,7 @@ def update():
             env.updateMask(state,around)
             # Add the action to list
             path_actions.append(action)
-            print("path",action)
+            # print("path",action)
             time += 1
             # Rl take action and get new state and reward
             state_, reward, done = env.step(action)
@@ -39,9 +39,9 @@ def update():
                 RL.learning(str(state),action,reward,str(state_))
                 # update state
                 state = state_
-
-            print(RL.q_table)
-            print(time)
+            # print(RL.q_table)
+            # print(time)
+            
             # break while loop when end of this episode
             if done:
                 break
@@ -51,7 +51,7 @@ def update():
     # end of this game
     print('game over')
     print(time_list)
-    # Plot cost time for each episodes.
+    # Plot cost time for each episode.
     plt.style.use('ggplot')
     plt.figure(figsize=(10, 5))
     plt.title("The cost time in each episode")
@@ -93,7 +93,10 @@ def resultOutput(observations, actions):
     # print(env.trajectory)
 
 if __name__ == '__main__':
+    # Load the maze
     read_maze.load_maze()
+    # Create the environment instance
     env = Maze_env(read_maze.maze_cells)
+    # Create the Q-table for the algorithm
     RL = QLTable(list(range(env.n_actions)))
     update()
